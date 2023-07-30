@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FileComparator:jar">
+    <output-path>$PROJECT_DIR$/release/artifacts/FileComparator_jar</output-path>
+    <root id="archive" name="FileComparator.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/release/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="FileComparator" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/itextpdf-5.5.13.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
