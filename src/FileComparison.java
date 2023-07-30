@@ -23,18 +23,6 @@ public class FileComparison {
         return fileFromFolder2.toString();
     }
 
-    public boolean isFileNamesMatch() {
-        return fileNamesMatch;
-    }
-
-    public boolean isFileLastModifiedDatesMatch() {
-        return fileLastModifiedDatesMatch;
-    }
-
-    public boolean isFileSizesMatch() {
-        return fileSizesMatch;
-    }
-
     private String resolveBooleans(boolean unresolvedBoolean){
         if (unresolvedBoolean){
             return "Yes";
