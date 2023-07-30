@@ -12,15 +12,49 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Build and Personalise a PDF Document
+ */
 public class PDFGenerator {
+    /**
+     * SimpleDateFormat Object
+     */
     private final SimpleDateFormat dateFormater;
+
+    /**
+     * ConsoleWriter Object
+     */
     private final ConsoleWriter consoleWriter;
+
+    /**
+     * List of File Comparisons
+     */
     private final List<FileComparison> comparisonReportsList;
+
+    /**
+     * Path to Folder 1
+     */
     private final String folder1;
+
+    /**
+     * Path to Folder 2
+     */
     private final String folder2;
+
+    /**
+     * UserData Object
+     */
     private final UserData userData;
 
-
+    /**
+     * Class Constructor
+     * @param dateFormater Sets the default program date/time format.
+     * @param consoleWriter ConsoleWriter object.
+     * @param comparisonReportsList Comparison Reports generated as a List
+     * @param folder1 Path to folder 1
+     * @param folder2 Path to folder 2
+     * @param userData UserData object.
+     */
     public PDFGenerator(SimpleDateFormat dateFormater, ConsoleWriter consoleWriter, List<FileComparison> comparisonReportsList, String folder1, String folder2, UserData userData) {
         this.dateFormater = dateFormater;
         this.consoleWriter = consoleWriter;
@@ -30,8 +64,13 @@ public class PDFGenerator {
         this.userData = userData;
     }
 
+    /**
+     * Get the assertion report as a PDF File.
+     * @return True if the PDF was sucessfully generated. False otherwise.
+     */
     public boolean getAssertionReport(){
         try {
+            String finalPath = "";
             String pathToDesktop = System.getProperty("user.home") + File.separator + "Desktop/";
             if(new File(pathToDesktop + "/FileComparator").mkdirs()){
                 consoleWriter.printInfo("FileComparator directory created on " + pathToDesktop);
@@ -42,8 +81,8 @@ public class PDFGenerator {
             document.setPageSize(PageSize.A4.rotate());
             String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathToDesktop + "FileComparator/assertion_results_"+ timestamp + ".pdf"));
-            consoleWriter.printInfo("Creating PDF file on " + pathToDesktop + " ...");
-            consoleWriter.printInfo("Created PDF File: assertion_results_" + timestamp + ".pdf on " + pathToDesktop);
+            consoleWriter.printInfo("Creating PDF file ...");
+            consoleWriter.printInfo("Created PDF File: assertion_results_" + timestamp + ".");
             document.open();
             setDocumentAttributes(document);
             generatePDFHeading(document);
@@ -62,6 +101,10 @@ public class PDFGenerator {
         return false;
     }
 
+    /**
+     * Set the to Generate PDF Docuement attributes: Author, Creation Date, Title, Subject and Creator.
+     * @param document document object for where to write to.
+     */
     private void setDocumentAttributes(Document document){
         document.addAuthor("FileComparator commanded by " + userData.getLoggedUser());
         document.addCreationDate();
@@ -70,6 +113,11 @@ public class PDFGenerator {
         document.addCreator("FileComparator");
     }
 
+    /**
+     * Generate the PDF Heading.
+     * @param document document object for where to write to.
+     * @throws DocumentException Throws a DocumentException.
+     */
     private void generatePDFHeading(Document document) throws DocumentException {
         document.add(new Paragraph(("                                                                                 Assertion Report")));
         document.add(new Paragraph("\n\n"));
@@ -78,6 +126,11 @@ public class PDFGenerator {
         document.add(new Paragraph("\n"));
     }
 
+    /**
+     * Generate a File names comparison results table
+     * @param document Document object for where to write to.
+     * @throws DocumentException Throws a DocumentException.
+     */
     private void generateFileNamesComparisonTable(Document document) throws DocumentException {
         document.add(new Paragraph("File Names Comparison:\n"));
         document.add(new Paragraph("\n"));
@@ -97,6 +150,11 @@ public class PDFGenerator {
         document.add(new Paragraph("\n"));
     }
 
+    /**
+     * Generate a Last Modified Dates comparison results table.
+     * @param document Document object for where to write to.
+     * @throws DocumentException Throws a DocumentException.
+     */
     private void generateLastModifiedDateComparisonTable(Document document) throws DocumentException {
         document.add(new Paragraph("Last Modified Date Comparison:\n"));
         document.add(new Paragraph("\n"));
@@ -116,6 +174,11 @@ public class PDFGenerator {
         document.add(new Paragraph("\n"));
     }
 
+    /**
+     * Generate a File Sizes comparison results table.
+     * @param document Document object for where to write to.
+     * @throws DocumentException Throws a DocumentException
+     */
     private void generateSizeComparisonTable(Document document) throws DocumentException {
         document.add(new Paragraph("Size Comparison:\n"));
         document.add(new Paragraph("\n"));
@@ -135,6 +198,11 @@ public class PDFGenerator {
         document.add(new Paragraph("\n"));
     }
 
+    /**
+     * Generate a tabe aggregating all the results from the comparison results of file names, last modified dates and file sizes. Adds a field representing the final decision (comparison between all the results of the mentioned parameters).
+     * @param document Document object for where to write to.
+     * @throws DocumentException Throws a DocumentException.
+     */
     private void generateFinalMatchTable(Document document) throws DocumentException {
         document.add(new Paragraph("Comparison Results:\n"));
         document.add(new Paragraph("\n"));
@@ -160,6 +228,11 @@ public class PDFGenerator {
 
     }
 
+    /**
+     * Generates a footer for the PDF Document
+     * @param document Document object for where to write to.
+     * @throws DocumentException Throws a DocumentException.
+     */
     private void generatePDFFooter(Document document) throws DocumentException {
         document.add(new Paragraph(("\n\n\n                                                                        Generated on: " + dateFormater.format(new Date()))));
     }

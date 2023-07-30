@@ -2,12 +2,29 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
+/**
+ * FileComparator Main Controller
+ */
 public class Main {
+    /**
+     * UserData Object
+     */
     private  static UserData userData;
+
+    /**
+     * ConsoleWriter Object
+     */
     private static ConsoleWriter consoleWriter;
+
+    /**
+     * ComparatorUtils Object
+     */
     private static ComparatorUtils comparatorUtils;
 
+    /**
+     * Main Function.
+     * @param args Execution args - Fill with the 2 (and only 2) folder paths, separated by a space.
+     */
     public static void main(String[] args) {
         userData = new UserData(System.getProperty("user.name"));
         SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -16,6 +33,10 @@ public class Main {
         performFileComparison(args);
     }
 
+    /**
+     * Perform the folders comparison.
+     * @param args Execution args.
+     */
     private static void performFileComparison(String[] args){
         String folder1 = "", folder2 = "";
         List<RetrievedFile> filesFromFolder1, filesFromFolder2;
@@ -46,7 +67,7 @@ public class Main {
                             consoleWriter.printInfo("File Assertion done!");
                             consoleWriter.printInfo("Generating Report ...");
                             if(new PDFGenerator(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), consoleWriter, comparisonResultsList, folder1, folder2, userData ).getAssertionReport()){
-                                consoleWriter.replyWithSuccess();
+                                consoleWriter.replyWithSuccess("File Assertion Report Generated ! File Comparisson Terminated!");
                             }else{
                                 consoleWriter.replyWithError("Error occurred while generating report!");
                             }
